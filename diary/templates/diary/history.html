@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+  <head>
+    <title>My Journey - Smart Diary</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        background:
+          linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+          url("https://images.unsplash.com/photo-1506466010722-395aa2bef877?auto=format&fit=crop&w=1920&q=80");
+        background-size: cover;
+        background-attachment: fixed;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+      .container {
+        width: 90%;
+        max-width: 800px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(15px);
+        padding: 30px;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      .header-box {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      /* Search Bar Styling */
+      .search-form {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+      }
+      .search-input {
+        flex: 1;
+        padding: 12px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+      }
+      .search-btn {
+        background: #1a73e8;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .search-btn:hover {
+        background: #1557b0;
+      }
+
+      .entry-card {
+        background: rgba(255, 255, 255, 0.95);
+        color: #333;
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 15px;
+        border-left: 8px solid #1a73e8;
+        transition: transform 0.2s;
+      }
+      .entry-card:hover {
+        transform: scale(1.02);
+      }
+      .date {
+        font-weight: bold;
+        color: #666;
+        font-size: 14px;
+      }
+      .sentiment {
+        float: right;
+        font-weight: bold;
+      }
+      .content {
+        margin-top: 10px;
+        line-height: 1.6;
+      }
+
+      .nav-links {
+        margin-top: 20px;
+        text-align: center;
+      }
+      .nav-links a {
+        color: #fff;
+        text-decoration: none;
+        margin: 0 15px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-box">
+        <h1>My Past Entries 📖</h1>
+        <p>Reflect on your growth and memories</p>
+      </div>
+
+      <form method="GET" class="search-form">
+        <input
+          type="text"
+          name="q"
+          class="search-input"
+          placeholder="Search your thoughts..."
+          value="{{ query|default:'' }}"
+        />
+        <button type="submit" class="search-btn">Search</button>
+        {% if query %}
+        <a href="{% url 'history' %}" style="color: white; align-self: center"
+          >Clear</a
+        >
+        {% endif %}
+      </form>
+
+      {% for entry in history %}
+      <div class="entry-card">
+        <span class="date">{{ entry.date_created|date:"F d, Y - H:i" }}</span>
+        <span class="sentiment">{{ entry.sentiment }}</span>
+        <div class="content">{{ entry.content }}</div>
+      </div>
+      {% empty %}
+      <p style="text-align: center">No entries found. Start writing today!</p>
+      {% endfor %}
+
+      <div class="nav-links">
+        <a href="{% url 'index' %}">⬅ Back to Writing</a>
+        <a href="{% url 'logout' %}">Logout</a>
+      </div>
+    </div>
+  </body>
+</html>
